@@ -14,14 +14,14 @@ These tests were conducted on a 5.4.0-77-generic Linux Mint 20.1 system utilizin
 Clone the project or download it as a zip and then unzip it.
 ## Conduct standard test
 Run
-```
+```bash
 bash script.sh -h
 ```
 and then use the appropriate flag.
 
 ## Conduct custom test
 Run
-```
+```bash
 make
 ./main -h
 ```
