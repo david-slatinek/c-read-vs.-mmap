@@ -76,7 +76,7 @@ run_read() {
 }
 
 calculate_deviations() {
-    chmod +x main.py
+    chmod u+x main.py
     echo "Calculating standard deviations ..."
     for i in "${file_sizes[@]}"; do
         ./main.py -r "$1" -f "${2}_results/${2}_${i}.txt"

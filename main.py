@@ -10,26 +10,24 @@ def usage():
     print("\tCalculate the standard deviation for a file")
 
     print("Flags")
-    print("-h")
+    print("-h, --help")
     print("\tPrint help")
-    print("-r <rounds>")
-    print("\tSpecify the number of rounds - required")
-    print("-f <filename>")
+    print("-r <rounds>, --rounds <rounds>")
+    print("\tSpecify the number of rounds")
+    print("-f <filename>, --file <filename>")
     print("\tFilename - required")
 
     print("Usage")
-    print("\tpython3 main.py -r [number] -f [filename]")
+    print("\t./main.py -f [filename]")
 
 
 def calculate_std_read(file_name: str, n_rounds: int):
     try:
-        file = open(file_name, "r")
+        with open(file_name) as file:
+            content = file.readlines()
     except IOError:
         print(f"Error when opening the file '{file_name}'")
         exit(1)
-    else:
-        with file:
-            content = file.readlines()
 
     new_file = []
     for i in range(1, len(content), n_rounds + 4):
@@ -39,29 +37,25 @@ def calculate_std_read(file_name: str, n_rounds: int):
         new_file.append(test)
 
     try:
-        file = open(file_name, "w")
-    except IOError:
-        print(f"Error when opening the file '{file_name}'")
-        exit(1)
-    else:
-        with file:
+        with open(file_name, "w") as file:
             for item in new_file:
                 for x in item:
                     file.write(x)
+    except IOError:
+        print(f"Error when opening the file '{file_name}'")
+        exit(1)
 
     os.system(f"sed -i '$d' {file_name}")
 
 
 def calculate_std_mmap(file_name: str, n_rounds: int):
     try:
-        file = open(file_name, "r+")
+        with open(file_name, "r+") as file:
+            times = [float(next(file).split(":")[1].rstrip()) for _ in range(n_rounds)]
+            file.write(f"deviation:{'%.4f' % round(stdev(times), 4)}\n")
     except IOError:
         print(f"Error when opening the file '{file_name}'")
         exit(1)
-    else:
-        with file:
-            times = [float(next(file).split(":")[1].rstrip()) for _ in range(n_rounds)]
-            file.write(f"deviation:{'%.4f' % round(stdev(times), 4)}\n")
 
 
 if __name__ == '__main__':

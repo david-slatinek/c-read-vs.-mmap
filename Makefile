@@ -8,3 +8,6 @@ clean:
 
 remove:
 	rm -rf test_files/
+
+permission:
+	chmod u+x script.sh main.py
